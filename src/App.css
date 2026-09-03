@@ -1,0 +1,65 @@
+.custom-jodit-editor .jodit-react-container .jodit-container .jodit-toolbar__box .jodit-toolbar-editor-collection {
+    justify-content: flex-end;
+  }
+  
+  .jodit-footer {
+    display: none !important;
+  }
+  
+  .custom-jodit-editor .jodit-status-bar {
+    display: none;
+  }
+  
+  .custom-jodit-editor .jodit-toolbar__box:not(:empty) {
+    border-bottom: 0px;
+  }
+  
+  .custom-jodit-editor .jodit-container:not(.jodit_inline) {
+    background-color: #F6F6F6;
+    border: none;
+  }
+  
+ 
+  
+  .jodit-toolbar-editor-collection_mode_horizontal {
+    position: static !important;
+  }
+
+  .custom-jodit-editor .jodit-ui-group .jodit-ui-group_line_true .jodit-ui-group_size_middle{
+    justify-content: flex-end;
+  }
+  .custom-jodit-editor .jodit-ui-group_line_true {
+    justify-content: flex-end
+  }
+ 
+
+
+.custom-checkbox .ant-checkbox-checked .ant-checkbox-inner {
+  background-color: #050505;
+  border-color: #050505;
+}
+/* .custom-checkbox .ant-checkbox-checked .ant-checkbox-inner:checked {
+  background-color: #050505 !important;
+  border-color: #050505 !important
+} */
+
+
+/* ant design  */
+
+:where(.css-dev-only-do-not-override-11lehqq).ant-pagination .ant-pagination-item {
+  border-radius: 20px;
+}
+
+:where(.css-dev-only-do-not-override-11lehqq).ant-pagination .ant-pagination-item-active {
+  font-weight: 600;
+  background-color: #007aff;
+  border-color: #007aff;
+}
+:where(.css-dev-only-do-not-override-11lehqq).ant-pagination .ant-pagination-item-active a {
+  color: white;
+}
+
+.custom-pagination .ant-pagination {
+  display: flex;
+  justify-content: center;
+}
