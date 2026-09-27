@@ -37,6 +37,8 @@ import AuditDashboard from "../Pages/AuditDashboard/AuditDashboard";
 import MostEventCreateUser from "../Pages/MostEventCreateUser/MostEventCreateUser";
 import MostTaskCompleteAdmins from "../Pages/MostTaskCompleteAdmins/MostTaskCompleteAdmins";
 import ContactUs from "../Pages/ContactUs/ContactUs";
+import PartnerContract from "../Pages/PartnerContract/PartnerContract";
+import DigitalEvidence from "../Pages/DigitalEvidence/DigitalEvidence";
 
 export const router = createBrowserRouter([
     {
@@ -171,6 +173,14 @@ export const router = createBrowserRouter([
             {
                 path : "/ticket",
                 element : <Ticket/>
+            },
+            {
+                path: "/partner-contract",
+                element: <PartnerContract />
+            },
+            {
+                path: "/digital-evidence",
+                element: <DigitalEvidence />
             },
 
 

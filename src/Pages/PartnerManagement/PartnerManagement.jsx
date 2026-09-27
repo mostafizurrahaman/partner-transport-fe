@@ -105,7 +105,8 @@ const PartnerManagement = () => {
         state: partner?.status,
         postalCode: partner?.address_postal_code,
         role: partner?.authId?.role,
-        isBlock: partner?.authId?.is_block
+        isBlock: partner?.authId?.is_block,
+        rating: partner?.rating ? Number(partner.rating).toFixed(1) : "0.0",
 
       }
     )
@@ -132,6 +133,17 @@ const PartnerManagement = () => {
           </div>
         );
       },
+    },
+    {
+      title: "Rating",
+      dataIndex: "rating",
+      key: "rating",
+      render: (r) => (
+        <span className="font-bold text-xs text-yellow-600 bg-yellow-50 px-2 py-0.5 rounded border border-yellow-200">
+          ★ {r || "0.0"}
+        </span>
+      ),
+      width: 90,
     },
     {
       title: "Email",

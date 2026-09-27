@@ -1,12 +1,16 @@
 import { Table } from 'antd'
-import React from 'react'
+import React, { useState } from 'react'
 import { CiSearch } from 'react-icons/ci'
 import { FaArrowLeft } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 import img1 from '../../assets/images/user1.png'
 import img2 from '../../assets/images/user2.png'
+import ClaimFilingModal from '../../Components/ClaimFilingModal'
+import { WarningOutlined } from '@ant-design/icons'
 
 const DeliveryDetails = () => {
+  const [openClaimModal, setOpenClaimModal] = useState(false);
+  const [selectedServiceId, setSelectedServiceId] = useState(null);
 
   const columns = [
     {
@@ -82,6 +86,23 @@ const DeliveryDetails = () => {
           </div>
         );
       },
+      align: "center",
+    },
+    {
+      title: "Actions",
+      key: "action",
+      render: (_, record) => (
+        <button
+          onClick={() => {
+            setSelectedServiceId(record.key?.replace('#', ''));
+            setOpenClaimModal(true);
+          }}
+          className="flex items-center gap-1 text-xs text-red-600 hover:text-red-800 bg-red-50 hover:bg-red-100 border border-red-200 px-3 py-1 rounded-full font-medium transition-colors cursor-pointer"
+        >
+          <WarningOutlined />
+          <span>File Claim</span>
+        </button>
+      ),
       align: "center",
     },
   ];
@@ -170,7 +191,11 @@ const DeliveryDetails = () => {
         }} />
       </div>
 
-
+      <ClaimFilingModal
+        open={openClaimModal}
+        onCancel={() => setOpenClaimModal(false)}
+        serviceId={selectedServiceId}
+      />
     </div>
   )
 }

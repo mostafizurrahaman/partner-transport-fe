@@ -48,14 +48,24 @@ const Sidebar = () => {
           icon: <></>,
         },
         {
+          path: '/partner-contract',
+          label: 'Partner Contract',
+          icon: <></>,
+        },
+        {
           path: '/contact-us',
           label: 'Contact Us',
           icon: <></>,
         },
-
-
-
       ]
+    })
+  }
+  {
+    getProfile?.data?.accTo_audit_dashboard && links.unshift({
+      path: '/digital-evidence',
+      label: 'Digital Evidence',
+      icon: <RiBarChartFill size={25} />,
+      sub_menu: false
     })
   }
   {

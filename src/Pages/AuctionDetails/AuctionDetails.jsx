@@ -14,10 +14,13 @@ import { useGetAuctionManagementDetailsQuery } from "../../redux/api/auctionMana
 import { imageUrl } from "../../redux/api/baseApi";
 import { Image } from "antd";
 import Loading from '../../Components/Loading/Loading';
+import ClaimFilingModal from '../../Components/ClaimFilingModal';
+import { WarningOutlined } from '@ant-design/icons';
 
 
 const AuctionDetails = () => {
   const [googleApiLoaded, setGoogleApiLoaded] = useState(false);
+  const [openClaimModal, setOpenClaimModal] = useState(false);
 
   const { id } = useParams();
   const { data: getAuctionDetails, isLoading } = useGetAuctionManagementDetailsQuery(id);
@@ -32,7 +35,22 @@ const AuctionDetails = () => {
 
   return (
     <div className="bg-white rounded-md p-5">
-      <PageName name={"Auction Details"} />
+      <div className="flex items-center justify-between">
+        <PageName name={"Auction Details"} />
+        <button
+          onClick={() => setOpenClaimModal(true)}
+          className="flex items-center gap-1.5 bg-red-50 text-red-600 hover:bg-red-100 border border-red-200 px-4 py-1.5 rounded-full font-medium text-sm transition-colors cursor-pointer"
+        >
+          <WarningOutlined />
+          <span>File Claim (Feature 10)</span>
+        </button>
+      </div>
+
+      <ClaimFilingModal
+        open={openClaimModal}
+        onCancel={() => setOpenClaimModal(false)}
+        serviceId={id}
+      />
 
       {isLoading ? <Loading type="detail" /> : <div className="max-w-4xl mx-auto mt-10">
         <div>

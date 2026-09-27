@@ -69,7 +69,19 @@ const AuditDashboard = () => {
 
     return (
         <div className=' p-4 rounded-md'>
-
+            <div className='flex items-center justify-between bg-white p-4 rounded-md mb-2 shadow-2xs'>
+                <div>
+                    <h2 className='text-lg font-bold text-gray-900'>System Audit & Governance Dashboard</h2>
+                    <p className='text-xs text-gray-500'>Analyze event statistics, admin productivity, and access digital evidence records</p>
+                </div>
+                <Link
+                    to="/digital-evidence"
+                    className='flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold px-4 py-2 rounded-full transition-colors shadow-2xs'
+                >
+                    <span>Digital Evidence & Traceability</span>
+                    <span>→</span>
+                </Link>
+            </div>
 
             <div className='grid grid-cols-12 gap-5 mt-5'>
                 <div className='col-span-8  rounded-md '>
