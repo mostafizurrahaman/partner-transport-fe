@@ -20,6 +20,15 @@ const authApi = baseApi.injectEndpoints({
                 }
             }
         }),
+        resendOtp : builder.mutation({
+            query : (data)=>{
+                return {
+                    url : '/auth/forgot-resend',
+                    method : 'POST',
+                    body : data
+                }
+            }
+        }),
         verifyOtp :builder.mutation({
             query : (data)=>{
                 return {
@@ -32,9 +41,12 @@ const authApi = baseApi.injectEndpoints({
         resetPassword :builder.mutation({
             query : ({email , data})=>{
                 return {
-                    url : `/auth/reset-password?email=${email}`,
+                    url : `/auth/reset-password?email=${encodeURIComponent(email)}`,
                     method : 'POST',
-                    body : data
+                    body : {
+                        ...data,
+                        email: email
+                    }
                 }
             }
         }),
@@ -69,4 +81,13 @@ const authApi = baseApi.injectEndpoints({
     })
 })
 
-export const {  useLoginAdminMutation , useForgetPasswordMutation, useVerifyOtpMutation , useResetPasswordMutation , useGetAdminProfileQuery, useEditAdminProfileMutation , useChangePasswordMutation} =  authApi;
+export const {  
+    useLoginAdminMutation, 
+    useForgetPasswordMutation, 
+    useResendOtpMutation,
+    useVerifyOtpMutation, 
+    useResetPasswordMutation, 
+    useGetAdminProfileQuery, 
+    useEditAdminProfileMutation, 
+    useChangePasswordMutation
+} =  authApi;

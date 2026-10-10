@@ -1,28 +1,44 @@
-
 import { Button, Form, Input } from "antd";
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useResetPasswordMutation } from "../../redux/api/authApi";
+import { toast } from "sonner";
 
 const UpdatePassword = () => {
-    const [resetPassword] = useResetPasswordMutation()
+    const [form] = Form.useForm();
+    const [resetPassword, { isLoading }] = useResetPasswordMutation();
     const navigate = useNavigate();
-    const [newPassError, setNewPassError] = useState("");
-    const [conPassError, setConPassError] = useState("");
-    const [curPassError, setCurPassError] = useState("");
-    const [err, setErr] = useState("");
+
+    const email = localStorage.getItem('email');
+
+    useEffect(() => {
+        if (!email) {
+            toast.error("Please verify your email first.");
+            navigate('/auth/forgot-password');
+        }
+    }, [email, navigate]);
 
     const onFinish = (values) => {
-        const email = localStorage.getItem('email')
+        if (!email) {
+            toast.error("Session expired. Please start again.");
+            navigate('/auth/forgot-password');
+            return;
+        }
 
         const data = {
-            newPassword: values?.password,
-            confirmPassword: values?.confirmPassword
-        }
-        resetPassword({email ,data}).unwrap()
-            .then((payload) => console.log('fulfilled', payload))
-            .catch((error) => console.error('rejected', error));
+            newPassword: values.password,
+            confirmPassword: values.confirmPassword,
+        };
 
+        resetPassword({ email, data }).unwrap()
+            .then((payload) => {
+                toast.success(payload?.message || "Password has been reset successfully!");
+                localStorage.removeItem('email');
+                navigate('/auth/login');
+            })
+            .catch((error) => {
+                toast.error(error?.data?.message || "Failed to reset password. Please try again.");
+            });
     };
 
     return (
@@ -30,42 +46,47 @@ const UpdatePassword = () => {
             style={{
                 width: "100%",
                 background: "#EBEBEB",
-                height: "100vh",
+                minHeight: "100vh",
                 display: "flex",
                 alignItems: "center",
-                justifyContent: "center"
+                justifyContent: "center",
+                padding: "40px 0"
             }}
         >
             <Form
-                name="normal_login"
+                form={form}
+                name="update_password"
                 className="login-form"
-                initialValues={{
-                    remember: true,
-                }}
                 style={{ width: "630px", background: "white", borderRadius: "12px", padding: "90px 57px" }}
                 onFinish={onFinish}
             >
-                <h1 style={{ fontSize: "32px", color: "#38393E", marginBottom: "13px", textAlign: "center", fontWeight: "bold" }}>Set a new password</h1>
-                <p style={{ width: "275px", color: "#7D7E8A", fontSize: "14px", fontWeight: 400, textAlign: "center", margin: "0 auto 0 auto" }}>
-                    Create a new password. Ensure it differs from
-                    previous ones for security
+                <h1 style={{ fontSize: "32px", color: "#38393E", marginBottom: "13px", textAlign: "center", fontWeight: "bold" }}>
+                    Set a new password
+                </h1>
+                <p style={{ width: "320px", color: "#7D7E8A", fontSize: "14px", fontWeight: 400, textAlign: "center", margin: "0 auto 30px auto" }}>
+                    Create a new password. Ensure it differs from previous ones for security.
                 </p>
 
-                <div style={{ margin: "45px 0 20px 0" }}>
-                    <label style={{ display: "block", color: "#38393E", marginBottom: "5px" }} htmlFor="">New Password</label>
+                <div style={{ marginBottom: "24px" }}>
+                    <label style={{ display: "block", color: "#38393E", marginBottom: "5px" }}>
+                        New Password
+                    </label>
                     <Form.Item
                         name="password"
                         rules={[
                             {
                                 required: true,
-                                message: "Please input your new Password!",
+                                message: "Please input your new password!",
+                            },
+                            {
+                                min: 6,
+                                message: "Password must be at least 6 characters!",
                             },
                         ]}
                         style={{ marginBottom: 0 }}
                     >
                         <Input.Password
-                            type="password"
-                            placeholder="Enter New password"
+                            placeholder="Enter new password"
                             style={{
                                 border: "1px solid #E0E4EC",
                                 height: "52px",
@@ -75,24 +96,33 @@ const UpdatePassword = () => {
                             }}
                         />
                     </Form.Item>
-                    {newPassError && <label style={{ display: "block", color: "red" }} htmlFor="error">{newPassError}</label>}
                 </div>
 
-                <div style={{ marginBottom: "40px" }}>
-                    <label style={{ display: "block", color: "#38393E", marginBottom: "5px" }} htmlFor="email">Confirm Password</label>
+                <div style={{ marginBottom: "35px" }}>
+                    <label style={{ display: "block", color: "#38393E", marginBottom: "5px" }}>
+                        Confirm Password
+                    </label>
                     <Form.Item
                         style={{ marginBottom: 0 }}
                         name="confirmPassword"
+                        dependencies={["password"]}
                         rules={[
                             {
                                 required: true,
-                                message: "Please input your Confirm Password!",
+                                message: "Please confirm your password!",
                             },
+                            ({ getFieldValue }) => ({
+                                validator(_, value) {
+                                    if (!value || getFieldValue("password") === value) {
+                                        return Promise.resolve();
+                                    }
+                                    return Promise.reject(new Error("The two passwords do not match!"));
+                                },
+                            }),
                         ]}
                     >
                         <Input.Password
-                            type="password"
-                            placeholder="Enter Confirm password"
+                            placeholder="Confirm your password"
                             style={{
                                 border: "1px solid #E0E4EC",
                                 height: "52px",
@@ -102,13 +132,14 @@ const UpdatePassword = () => {
                             }}
                         />
                     </Form.Item>
-                    {conPassError && <label style={{ display: "block", color: "red" }} htmlFor="error">{conPassError}</label>}
                 </div>
 
-                <Form.Item>
+                <Form.Item style={{ marginBottom: 0 }}>
                     <Button
                         type="primary"
                         htmlType="submit"
+                        loading={isLoading}
+                        disabled={isLoading}
                         block
                         style={{
                             border: "none",
@@ -117,19 +148,19 @@ const UpdatePassword = () => {
                             color: "white",
                             borderRadius: "30px",
                             outline: "none",
-                            marginTop: ""
+                            fontSize: "18px",
+                            fontWeight: "500",
                         }}
                     >
-
-                        <Link
-                            className="login-form-forgot "
-                            style={{ color: "#FFF" }}
-                            to="/"
-                        >
-                            Reset Password
-                        </Link>
+                        Reset Password
                     </Button>
                 </Form.Item>
+
+                <div className="text-center mt-6">
+                    <Link to="/auth/login" style={{ color: "#050505", textDecoration: "underline", fontSize: "14px" }}>
+                        Back to Login
+                    </Link>
+                </div>
             </Form>
         </div>
     );
