@@ -21,7 +21,7 @@ const dashboardHomeApi = baseApi.injectEndpoints({
         partnerGrowthOverview: builder.query({
             query: (year) => {
                 return {
-                    url: `/dashboard//user-growth?year=${year}`,
+                    url: `/dashboard/user-growth?year=${year}`,
                     method: 'GET'
                 }
             }

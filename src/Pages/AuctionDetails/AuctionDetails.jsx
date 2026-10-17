@@ -11,7 +11,7 @@ import { RxStarFilled } from "react-icons/rx";
 import MapComponent from "../../Components/MapComponent";
 import { useParams } from "react-router-dom";
 import { useGetAuctionManagementDetailsQuery } from "../../redux/api/auctionManagementApi";
-import { imageUrl } from "../../redux/api/baseApi";
+import { imageUrl, getFullImageUrl } from "../../redux/api/baseApi";
 import { Image } from "antd";
 import Loading from '../../Components/Loading/Loading';
 import ClaimFilingModal from '../../Components/ClaimFilingModal';
@@ -198,7 +198,7 @@ const AuctionDetails = () => {
                 {getAuctionDetails?.data?.result?.goodsLoadedImages?.map((img, i) => (
                   <Image
                     key={i}
-                    src={`${imageUrl}/${img.replace("uploads/", "")}`}
+                    src={getFullImageUrl(img)}
                     alt={`goods-loaded-${i}`}
                     width={250}
                     height={144}
@@ -220,7 +220,7 @@ const AuctionDetails = () => {
                 {getAuctionDetails?.data?.result?.deliveredImages?.map((img, i) => (
                   <Image
                     key={i}
-                    src={`${imageUrl}/${img.replace("uploads/", "")}`}
+                    src={getFullImageUrl(img)}
                     alt={`delivered-${i}`}
                     width={250}
                     height={144}

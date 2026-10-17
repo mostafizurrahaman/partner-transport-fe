@@ -13,7 +13,7 @@ import {
   useGetConversationQuery,
 } from "../../redux/api/auctionManagementApi";
 import { skipToken } from "@reduxjs/toolkit/query/react";
-import { imageUrl } from "../../redux/api/baseApi";
+import { imageUrl, getFullImageUrl } from "../../redux/api/baseApi";
 import { useGetAllVariableQuery } from "../../redux/api/variableManagementApi";
 import Loading from "../../Components/Loading/Loading";
 import { render } from "react-dom";
@@ -253,10 +253,10 @@ const AuctionManagement = () => {
       transactionId: auction?.transactionId,
       senderId: auction?.user?._id,
       receiverId: auction?.confirmedPartner?._id,
-      userImg: `${imageUrl}/${auction?.user?.profile_image}`,
+      userImg: getFullImageUrl(auction?.user?.profile_image),
       userName: auction?.user?.name,
       partnerName: auction?.confirmedPartner?.name,
-      partnerImage: `${imageUrl}/${auction?.confirmedPartner?.profile_image}`,
+      partnerImage: getFullImageUrl(auction?.confirmedPartner?.profile_image),
       itemType: auction?.service,
       category: auction?.category[0]?.category,
       winBid: auction?.winBid?.toFixed(2),

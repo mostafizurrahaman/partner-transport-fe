@@ -28,12 +28,14 @@ const BACKEND_URL = "https://backend.xmoveit.com";
 
 export const imageUrl = BACKEND_URL;
 
-// Helper to reliably construct full image URLs
+// Helper to reliably construct full image URLs without duplicate slashes
 export const getFullImageUrl = (path) => {
-  if (!path) return "";
-  if (path.startsWith("http://") || path.startsWith("https://")) return path;
-  const cleanBase = imageUrl.replace(/\/+$/, "");
-  const cleanPath = path.startsWith("/") ? path : `/${path}`;
+  if (!path || typeof path !== "string") return "";
+  if (path.startsWith("http://") || path.startsWith("https://")) {
+    return path.replace(/([^:])\/\/+/g, "$1/");
+  }
+  const cleanBase = (imageUrl || "").replace(/\/+$/, "");
+  const cleanPath = "/" + path.replace(/^(\/)?uploads[\\/]/, "").replace(/^\/+/, "");
   return `${cleanBase}${cleanPath}`;
 };
 

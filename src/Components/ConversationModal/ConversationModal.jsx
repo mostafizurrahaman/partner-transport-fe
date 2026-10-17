@@ -1,7 +1,7 @@
 import { Modal } from "antd";
 import React, { useEffect, useRef, useState } from "react";
 import { io } from "socket.io-client";
-import { imageUrl } from "../../redux/api/baseApi";
+import { imageUrl, getFullImageUrl } from "../../redux/api/baseApi";
 import Loading from "../Loading/Loading";
 import { MdOutlineMessage } from "react-icons/md";
 
@@ -24,7 +24,7 @@ const ChatBubble = ({ message, getConversation, senderId }) => {
   };
 
   const profileImage = getProfileImage();
-  const imageSource = profileImage ? `${imageUrl}${profileImage}` : `${imageUrl}/default-avatar.png`;
+  const imageSource = profileImage ? getFullImageUrl(profileImage) : `${imageUrl}/default-avatar.png`;
 
   return (
     <div
