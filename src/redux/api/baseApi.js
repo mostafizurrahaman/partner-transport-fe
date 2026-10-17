@@ -23,8 +23,8 @@ export const baseApi = createApi({
   endpoints: () => ({}),
 });
 // Active backend URL
-const BACKEND_URL = "http://10.10.28.71:5050";
-// const BACKEND_URL = 'https://backend.xmoveit.com';
+// const BACKEND_URL = "http://10.10.28.71:5050";
+const BACKEND_URL = "https://backend.xmoveit.com";
 
 export const imageUrl = BACKEND_URL;
 
