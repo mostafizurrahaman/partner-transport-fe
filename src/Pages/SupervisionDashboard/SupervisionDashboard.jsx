@@ -4,7 +4,7 @@ import AdminTaskTable from '../../Components/AdminTaskTable/AdminTaskTable';
 import { Link } from 'react-router-dom';
 import ActiveAdmins from '../../Components/ActiveAdmins/ActiveAdmins';
 import { useGetCompletedTaskQuery, useGetTskCountQuery } from '../../redux/api/supervisorDashboardApi';
-import { imageUrl } from '../../redux/api/baseApi';
+import { imageUrl, getFullImageUrl } from '../../redux/api/baseApi';
 import { useGetAdminProfileQuery } from '../../redux/api/authApi';
 import { io } from 'socket.io-client';
 import Loading from '../../Components/Loading/Loading';
@@ -57,7 +57,7 @@ const SupervisionDashboard = () => {
                 task: user?.task,
                 admin: {
                     name: user?.assignedAdmin,
-                    avatar: `${imageUrl}${user?.image}`,
+                    avatar: getFullImageUrl(user?.image),
                 },
                 status: user?.status,
             }

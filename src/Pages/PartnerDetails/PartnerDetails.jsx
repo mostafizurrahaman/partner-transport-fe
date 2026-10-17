@@ -5,7 +5,7 @@ import {
     useGetPartnerDetailsQuery,
     useGetPartnerRatingsSummaryQuery
 } from '../../redux/api/partnerManagementApi'
-import { imageUrl } from '../../redux/api/baseApi'
+import { imageUrl, getFullImageUrl } from '../../redux/api/baseApi'
 import { Image, Progress, Rate, Tag } from 'antd'
 import Loading from '../../Components/Loading/Loading'
 
@@ -73,7 +73,7 @@ const PartnerDetails = () => {
                                 className='rounded-full object-cover shadow-sm'
                                 width={85}
                                 height={85}
-                                src={partner?.profile_image ? `${imageUrl}${partner.profile_image}` : '/default-avatar.png'}
+                                src={getFullImageUrl(partner?.profile_image) || '/default-avatar.png'}
                                 alt={partner?.name}
                             />
                             <div>
@@ -243,7 +243,7 @@ const PartnerDetails = () => {
                                                 <div className='flex items-start justify-between'>
                                                     <div className='flex items-center gap-3'>
                                                         <img
-                                                            src={review?.userId?.profile_image ? `${imageUrl}${review.userId.profile_image}` : '/default-avatar.png'}
+                                                            src={getFullImageUrl(review?.userId?.profile_image) || '/default-avatar.png'}
                                                             className='w-10 h-10 rounded-full object-cover border'
                                                             alt=""
                                                         />
@@ -299,15 +299,15 @@ const PartnerDetails = () => {
                                 <div className='grid grid-cols-3 gap-3'>
                                     <div className='border rounded-lg p-2 text-center'>
                                         <p className='text-xs text-gray-500 mb-1 font-medium'>Front</p>
-                                        <Image className='rounded object-cover' width="100%" height={140} src={`${imageUrl}${partner?.vehicleFrontImage}`} alt="Front" />
+                                        <Image className='rounded object-cover' width="100%" height={140} src={getFullImageUrl(partner?.vehicleFrontImage)} alt="Front" />
                                     </div>
                                     <div className='border rounded-lg p-2 text-center'>
                                         <p className='text-xs text-gray-500 mb-1 font-medium'>Side</p>
-                                        <Image className='rounded object-cover' width="100%" height={140} src={`${imageUrl}${partner?.vehicleSideImage}`} alt="Side" />
+                                        <Image className='rounded object-cover' width="100%" height={140} src={getFullImageUrl(partner?.vehicleSideImage)} alt="Side" />
                                     </div>
                                     <div className='border rounded-lg p-2 text-center'>
                                         <p className='text-xs text-gray-500 mb-1 font-medium'>Back</p>
-                                        <Image className='rounded object-cover' width="100%" height={140} src={`${imageUrl}${partner?.vehicleBackImage}`} alt="Back" />
+                                        <Image className='rounded object-cover' width="100%" height={140} src={getFullImageUrl(partner?.vehicleBackImage)} alt="Back" />
                                     </div>
                                 </div>
                             </div>
@@ -315,19 +315,19 @@ const PartnerDetails = () => {
                             <div className='grid grid-cols-2 gap-4 pt-4'>
                                 <div className='border rounded-lg p-3'>
                                     <p className='font-medium text-xs text-gray-600 mb-2'>License Plate</p>
-                                    <Image className='rounded object-cover' width="100%" height={130} src={`${imageUrl}${partner?.licensePlateImage}`} alt="Plate" />
+                                    <Image className='rounded object-cover' width="100%" height={130} src={getFullImageUrl(partner?.licensePlateImage)} alt="Plate" />
                                 </div>
                                 <div className='border rounded-lg p-3'>
                                     <p className='font-medium text-xs text-gray-600 mb-2'>Driving License</p>
-                                    <Image className='rounded object-cover' width="100%" height={130} src={`${imageUrl}${partner?.drivingLicenseImage}`} alt="License" />
+                                    <Image className='rounded object-cover' width="100%" height={130} src={getFullImageUrl(partner?.drivingLicenseImage)} alt="License" />
                                 </div>
                                 <div className='border rounded-lg p-3'>
                                     <p className='font-medium text-xs text-gray-600 mb-2'>Vehicle Insurance</p>
-                                    <Image className='rounded object-cover' width="100%" height={130} src={`${imageUrl}${partner?.vehicleInsuranceImage}`} alt="Insurance" />
+                                    <Image className='rounded object-cover' width="100%" height={130} src={getFullImageUrl(partner?.vehicleInsuranceImage)} alt="Insurance" />
                                 </div>
                                 <div className='border rounded-lg p-3'>
                                     <p className='font-medium text-xs text-gray-600 mb-2'>Registration Card</p>
-                                    <Image className='rounded object-cover' width="100%" height={130} src={`${imageUrl}${partner?.vehicleRegistrationCardImage}`} alt="Registration" />
+                                    <Image className='rounded object-cover' width="100%" height={130} src={getFullImageUrl(partner?.vehicleRegistrationCardImage)} alt="Registration" />
                                 </div>
                             </div>
                         </div>

@@ -1,7 +1,7 @@
 import React  from 'react'
 import ActiveAdminsTable from '../ActiveAdminsTable/ActiveAdminsTable'
 import { Link } from 'react-router-dom';
-import { imageUrl } from '../../redux/api/baseApi';
+import { imageUrl, getFullImageUrl } from '../../redux/api/baseApi';
 const ActiveAdmins = ({activeAdmin}) => {
 
 
@@ -10,7 +10,7 @@ const ActiveAdmins = ({activeAdmin}) => {
       {
         key: i+1,
         slNo: i + 1,
-        admin: { name: admin?.name, avatar: `${imageUrl}${admin?.profile_image}`, online: true },
+        admin: { name: admin?.name, avatar: getFullImageUrl(admin?.profile_image), online: true },
         email: admin?.email,
         activity: admin?.phone_number,
         tasksCompleted: admin?.todayCompletedTasks,

@@ -8,7 +8,7 @@ import { BsChatLeftText } from 'react-icons/bs'
 import { CgNotes } from 'react-icons/cg'
 import TextArea from 'antd/es/input/TextArea'
 import { useBlockUnBlockPartnerMutation, useDeletePartnerMutation, useGetAllPartnerQuery, useSendNoticePartnerMutation } from '../../redux/api/partnerManagementApi'
-import { imageUrl } from '../../redux/api/baseApi'
+import { imageUrl, getFullImageUrl } from '../../redux/api/baseApi'
 import { toast } from 'sonner'
 import { useGetAdminProfileQuery } from '../../redux/api/authApi'
 import { useGetMessageQuery } from '../../redux/api/userManagementApi'
@@ -86,7 +86,7 @@ const PartnerManagement = () => {
         id: partner?._id,
         key: i + 1,
         name: partner?.name,
-        img: `${imageUrl}${partner?.profile_image}`,
+        img: getFullImageUrl(partner?.profile_image),
         email: partner?.email,
         contactNumber: partner?.phone_number,
         location: partner?.city,

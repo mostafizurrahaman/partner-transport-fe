@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom'
 import ProfileUpdateRequest from './Components/ProfileUpdateRequest/ProfileUpdateRequest'
 import './App.css'
 import { useGetPendingPartnerQuery, useOverviewDashboardQuery } from './redux/api/dashboardHomeApi'
-import { imageUrl } from './redux/api/baseApi'
+import { imageUrl, getFullImageUrl } from './redux/api/baseApi'
 import Loading from './Components/Loading/Loading'
 function App() {
 
@@ -50,25 +50,25 @@ function App() {
       {
         key: i + 1,
         name: partner?.name,
-        img: `${imageUrl}${partner?.profile_image}`,
+        img: getFullImageUrl(partner?.profile_image),
         email: partner?.email,
         contact:partner?.phone_number,
         // vichelType: 'car',
         // vichelNumber: "A 23445355",
-        drivingLicense: `${imageUrl}${partner?.drivingLicenseImage}`,
-        vichelImg: `${imageUrl}${partner?.vehicleFrontImag}`,
+        drivingLicense: getFullImageUrl(partner?.drivingLicenseImage),
+        vichelImg: getFullImageUrl(partner?.vehicleFrontImag),
         // passport: 759175632578,
         location: partner?.country,
         status : partner?.status,
         city: partner?.city,
         address: `${partner?.city || ""}, ${partner?.country || ""}, ${partner?.status || ""}`,
-        vehicleFrontImage : `${imageUrl}${partner?.vehicleFrontImage}`,
-        vehicleBackImage : `${imageUrl}${partner?.vehicleBackImage}`,
-        vehicleSideImage :  `${imageUrl}${partner?.vehicleSideImage}`,
-        licensePlateImage : `${imageUrl}${partner?.licensePlateImage}`,
-        drivingLicenseImage :`${imageUrl}${partner?.drivingLicenseImage}`,
-        vehicleInsuranceImage : `${imageUrl}${partner?.vehicleInsuranceImage}`,
-        vehicleRegistrationCardImage : `${imageUrl}${partner?.vehicleRegistrationCardImage}`
+        vehicleFrontImage : getFullImageUrl(partner?.vehicleFrontImage),
+        vehicleBackImage : getFullImageUrl(partner?.vehicleBackImage),
+        vehicleSideImage :  getFullImageUrl(partner?.vehicleSideImage),
+        licensePlateImage : getFullImageUrl(partner?.licensePlateImage),
+        drivingLicenseImage : getFullImageUrl(partner?.drivingLicenseImage),
+        vehicleInsuranceImage : getFullImageUrl(partner?.vehicleInsuranceImage),
+        vehicleRegistrationCardImage : getFullImageUrl(partner?.vehicleRegistrationCardImage)
 
 
       }

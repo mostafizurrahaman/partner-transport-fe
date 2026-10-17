@@ -24,7 +24,7 @@ const ChatBubble = ({ message, getConversation, senderId }) => {
   };
 
   const profileImage = getProfileImage();
-  const imageSource = profileImage ? getFullImageUrl(profileImage) : `${imageUrl}/default-avatar.png`;
+  const imageSource = getFullImageUrl(profileImage) || '/default-avatar.png';
 
   return (
     <div

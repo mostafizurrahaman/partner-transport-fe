@@ -8,7 +8,7 @@ import { GoReply } from "react-icons/go";
 import ReplyModal from "../../Components/ReplyModal";
 import ViewTicketModal from "../../Components/ViewTicketModal";
 import { useGetAllTicketQuery } from "../../redux/api/supportApi";
-import { imageUrl } from "../../redux/api/baseApi";
+import { imageUrl, getFullImageUrl } from "../../redux/api/baseApi";
 import Loading from '../../Components/Loading/Loading';
 
 const Ticket = () => {
@@ -30,7 +30,7 @@ const Ticket = () => {
       date: ticket?.createdAt?.split("T")[0],
       userName: ticket?.user?.name,
       userAvatar: (
-        <img src={`${imageUrl}${ticket?.user?.profile_image}`} alt="" />
+        <img src={getFullImageUrl(ticket?.user?.profile_image)} alt="" />
       ),
       complain: ticket?.description,
       email: ticket?.user?.email,

@@ -12,7 +12,7 @@ import TextArea from 'antd/es/input/TextArea'
 import ConversationModal from '../../Components/ConversationModal/ConversationModal'
 import ChatModal from '../../Components/ChatModal/ChatModal'
 import { useBlockUnBlockUserMutation, useDeleteUserMutation, useGetAllUserQuery, useGetMessageQuery, useSendNoticeMutation } from '../../redux/api/userManagementApi'
-import { imageUrl } from '../../redux/api/baseApi'
+import { imageUrl, getFullImageUrl } from '../../redux/api/baseApi'
 import { toast } from 'sonner'
 import { useGetAdminProfileQuery } from '../../redux/api/authApi'
 import Loading from '../../Components/Loading/Loading'
@@ -175,7 +175,7 @@ const UserManagement = () => {
       id: user?._id,
       key: i + 1,
       name: user?.name,
-      img: `${imageUrl}${user?.profile_image}`,
+      img: getFullImageUrl(user?.profile_image),
       email: user?.email,
       contactNumber: user?.phone_number,
       balance: user?.wallet,

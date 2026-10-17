@@ -3,7 +3,7 @@ import PageName from '../../Components/Shared/PageName';
 import { Form, Input, Modal, Pagination, Table } from 'antd';
 import { IoEyeOutline } from 'react-icons/io5'; 
 import { useGetAllBankTransferQuery, usePaymentBankTransferMutation } from '../../redux/api/variableManagementApi';
-import { imageUrl } from '../../redux/api/baseApi';
+import { imageUrl, getFullImageUrl } from '../../redux/api/baseApi';
 import { toast } from 'sonner';
 import UserOpenModals from '../../Components/UserOpenModal/UserModalsOpen';
 import Loading from '../../Components/Loading/Loading';
@@ -39,7 +39,7 @@ const BankTransfer = () => {
         id: user?._id,
         name: user?.name,
         role: user?.userType,
-        img: `${imageUrl}${user?.user?.profile_image}`,
+        img: getFullImageUrl(user?.user?.profile_image),
         email: user?.user?.email,
         contactNumber: user?.user?.phone_number,
         location: user?.user?.address_city,

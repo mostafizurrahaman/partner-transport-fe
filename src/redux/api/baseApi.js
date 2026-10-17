@@ -30,7 +30,7 @@ export const imageUrl = BACKEND_URL;
 
 // Helper to reliably construct full image URLs without duplicate slashes
 export const getFullImageUrl = (path) => {
-  if (!path || typeof path !== "string") return "";
+  if (!path || typeof path !== "string" || path.trim() === "" || path === "null" || path === "undefined") return "";
   if (path.startsWith("http://") || path.startsWith("https://")) {
     return path.replace(/([^:])\/\/+/g, "$1/");
   }

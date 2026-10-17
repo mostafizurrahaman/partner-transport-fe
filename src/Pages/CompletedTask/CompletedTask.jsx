@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 import { IoArrowBack } from 'react-icons/io5'
 import { CiSearch } from 'react-icons/ci'
 import { useGetCompletedTaskQuery } from '../../redux/api/supervisorDashboardApi'
-import { imageUrl } from '../../redux/api/baseApi'
+import { imageUrl, getFullImageUrl } from '../../redux/api/baseApi'
 import { Pagination } from 'antd'
 import Loading from '../../Components/Loading/Loading'
 const CompletedTask = () => {
@@ -26,7 +26,7 @@ const CompletedTask = () => {
                 task: user?.task,
                 admin: {
                     name: user?.assignedAdmin,
-                    avatar: `${imageUrl}${user?.image}`,
+                    avatar: getFullImageUrl(user?.image),
                 },
                 status: user?.status,
             }

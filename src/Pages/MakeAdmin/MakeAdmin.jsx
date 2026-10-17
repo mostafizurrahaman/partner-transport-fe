@@ -8,7 +8,7 @@ import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import MakeAdminModal from '../../Components/MakeAdminModal'
 import { useDeleteAdminMutation, useGetAllAdminQuery } from '../../redux/api/makeAdminApi'
 import { toast } from 'sonner'
-import { imageUrl } from '../../redux/api/baseApi'
+import { imageUrl, getFullImageUrl } from '../../redux/api/baseApi'
 import { EditAdminModal } from '../../Components/Shared/EditAdminModal'
 import Loading from '../../Components/Loading/Loading'
 
@@ -34,7 +34,7 @@ const MakeAdmin = () => {
         email: admin?.email,
         contactNumber: admin?.phone_number,
         // access: 'User Management , user , loewntfsagoknsdgsdaiab , asdgjaseodhg , lsdhgkjsd, ',
-        avatar: `${imageUrl}${admin?.profile_image}`,
+        avatar: getFullImageUrl(admin?.profile_image),
       }
     )
   })

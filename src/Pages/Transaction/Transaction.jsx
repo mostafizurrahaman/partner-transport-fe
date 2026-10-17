@@ -7,7 +7,7 @@ import { MdOutlineMessage } from 'react-icons/md'
 import { IoEyeOutline } from 'react-icons/io5'
 import ConversationModal from '../../Components/ConversationModal/ConversationModal'
 import { useGetAllTransactionQuery } from '../../redux/api/transactionApi'
-import { imageUrl } from '../../redux/api/baseApi'
+import { imageUrl, getFullImageUrl } from '../../redux/api/baseApi'
 import { useGetConversationQuery } from '../../redux/api/auctionManagementApi'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 import { useGetAllVariableQuery } from '../../redux/api/variableManagementApi'
@@ -129,10 +129,10 @@ const Transaction = () => {
         receiverId: transaction?.receiveUser?._id,
         serviceId: transaction?.serviceId?._id || transaction?.serviceId,
         date: transaction?.createdAt?.split('T')[0],
-        userImg: `${imageUrl}${transaction?.payUser?.profile_image}`,
+        userImg: getFullImageUrl(transaction?.payUser?.profile_image),
         userName: transaction?.payUser?.name,
         partnerName: transaction?.receiveUser?.name,
-        partnerImage: `${imageUrl}${transaction?.receiveUser?.profile_image}`,
+        partnerImage: getFullImageUrl(transaction?.receiveUser?.profile_image),
         itemType: transaction?.payType,
         // category: transaction?.serviceId?.category[0]?.category,
         winBid: transaction?.amount,

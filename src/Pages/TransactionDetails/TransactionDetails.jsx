@@ -9,7 +9,7 @@ import img6 from '../../assets/images/mob2.png'
 import img7 from '../../assets/images/mob3.png'
 import { useParams } from 'react-router-dom'
 import { useGetSingleTransactionQuery } from '../../redux/api/transactionApi'
-import { imageUrl } from '../../redux/api/baseApi'
+import { imageUrl, getFullImageUrl } from '../../redux/api/baseApi'
 import Loading from '../../Components/Loading/Loading'
 const TransactionDetails = () => {
     const { id } = useParams()
@@ -30,7 +30,7 @@ const TransactionDetails = () => {
                         {
                             getSingleData?.data?.serviceId?.image?.map((img, i) => {
                                 return (
-                                    <img key={i+1} src={`${imageUrl}${img}`} className='h-52 rounded-md  object-contain' alt="" />
+                                    <img key={i+1} src={getFullImageUrl(img)} className='h-52 rounded-md  object-contain' alt="" />
                                 )
                             })
                         }
@@ -62,7 +62,7 @@ const TransactionDetails = () => {
                         {
                             getSingleData?.data?.serviceId?.image?.map((image, i)=>{
                                 return (
-                                    <img key={i+1} src={`${imageUrl}${image}`}  className='h-52 rounded-md  object-contain' alt="" />
+                                    <img key={i+1} src={getFullImageUrl(image)}  className='h-52 rounded-md  object-contain' alt="" />
 
                                 )
                             })

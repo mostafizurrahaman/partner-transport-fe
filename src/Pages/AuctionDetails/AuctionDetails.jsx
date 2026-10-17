@@ -60,7 +60,7 @@ const AuctionDetails = () => {
               {getAuctionDetails?.data?.result?.image?.map((img, i) => (
                 <Image
                   key={i}
-                  src={`${imageUrl}${img}`}
+                  src={getFullImageUrl(img)}
                   alt={`preview-${i}`}
                   width={250}
                   height={144}
@@ -242,7 +242,7 @@ const AuctionDetails = () => {
             <div className=" h-20 w-20 mx-auto ">
               <img
                 className="rounded-md"
-                src={`${imageUrl}${getAuctionDetails?.data?.result?.confirmedPartner?.profile_image}`}
+                src={getFullImageUrl(getAuctionDetails?.data?.result?.confirmedPartner?.profile_image)}
                 alt=""
               />
             </div>
@@ -278,7 +278,7 @@ const AuctionDetails = () => {
                 <Image
                   width={250}
                   height={144}
-                  src={`${imageUrl}${getAuctionDetails?.data?.result?.confirmedPartner?.licensePlateImage}`}
+                  src={getFullImageUrl(getAuctionDetails?.data?.result?.confirmedPartner?.licensePlateImage)}
                   className="h-40 w-40 rounded-md"
                   alt=""
                 />
@@ -288,7 +288,7 @@ const AuctionDetails = () => {
                 <Image
                   width={250}
                   height={144}
-                  src={`${imageUrl}${getAuctionDetails?.data?.result?.confirmedPartner?.vehicleInsuranceImage}`}
+                  src={getFullImageUrl(getAuctionDetails?.data?.result?.confirmedPartner?.vehicleInsuranceImage)}
                   className="h-40 w-40 rounded-md"
                   alt=""
                 />
@@ -322,7 +322,7 @@ const AuctionDetails = () => {
                     <div className=" h-20 w-20 mx-auto ">
                       <img
                         className="h-5 w-5 rounded-full"
-                        src={`${imageUrl}${user?.partner?.profile_image}`}
+                        src={getFullImageUrl(user?.partner?.profile_image)}
                         alt=""
                       />
                     </div>

@@ -7,7 +7,7 @@ import MostCreateEventUserTable from '../../Components/MostCreateEventUserTable/
 import MostTaskCompleteAdminTable from '../../Components/MostTaskCompleteAdminTable/MostTaskCompleteAdminTable'
 import { useEventCreateRateQuery, useGetMostCreateUserQuery, useGetMostTaskCompletedAdminsQuery } from '../../redux/api/auditDashboardApi'
 import dayjs from 'dayjs';
-import { imageUrl } from '../../redux/api/baseApi'
+import { imageUrl, getFullImageUrl } from '../../redux/api/baseApi'
 const AuditDashboard = () => {
 
     const currentMonth = dayjs().month() + 1;
@@ -58,7 +58,7 @@ const AuditDashboard = () => {
             {
                 key: user,
                 slNo: user?.adminId,
-                admin: { name: user?.name, avatar: `${imageUrl}${user?.image}` },
+                admin: { name: user?.name, avatar: getFullImageUrl(user?.image) },
                 email: user?.email,
                 ticketsAttended: user?.ticketsAttended,
                 complaintsAttended: user?.complaintsAttended,

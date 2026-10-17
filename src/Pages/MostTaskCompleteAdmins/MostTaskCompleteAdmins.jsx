@@ -3,7 +3,7 @@ import PageName from '../../Components/Shared/PageName'
 import { CiSearch } from 'react-icons/ci'
 import MostTaskCompleteAdminTable from '../../Components/MostTaskCompleteAdminTable/MostTaskCompleteAdminTable'
 import { useGetMostTaskCompletedAdminsQuery } from '../../redux/api/auditDashboardApi'
-import { imageUrl } from '../../redux/api/baseApi'
+import { imageUrl, getFullImageUrl } from '../../redux/api/baseApi'
 import { Pagination } from 'antd'
 import Loading from '../../Components/Loading/Loading'
 const MostTaskCompleteAdmins = () => {
@@ -16,7 +16,7 @@ const MostTaskCompleteAdmins = () => {
             {
                 key: user,
                 slNo: user?.adminId,
-                admin: { name: user?.name, avatar: `${imageUrl}${user?.image}` },
+                admin: { name: user?.name, avatar: getFullImageUrl(user?.image) },
                 email: user?.email,
                 ticketsAttended: user?.ticketsAttended,
                 complaintsAttended: user?.complaintsAttended,

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { FaArrowLeft } from 'react-icons/fa';
 import { CiSearch } from 'react-icons/ci';
 import { useGetConversationMessageQuery, useGetMessagesConversationQuery } from '../../redux/api/variableManagementApi';
-import { imageUrl } from '../../redux/api/baseApi';
+import { imageUrl, getFullImageUrl } from '../../redux/api/baseApi';
 import Loading from '../../Components/Loading/Loading';
 
 
@@ -13,7 +13,7 @@ const ChatBubble = ({ message, senderId, senderImage, receiverImage }) => {
     <>
       <div className={`flex items-start space-x-2 ${isSelf ? 'flex-row-reverse text-right' : ''} mb-4`}>
         <img
-          src={`${isSelf ? `${imageUrl}${senderImage}` : `${imageUrl}${receiverImage}`}`}
+          src={getFullImageUrl(isSelf ? senderImage : receiverImage)}
           size="large"
           className={isSelf ? 'ml-2 h-10 rounded-full w-10' : 'mr-2 h-10 rounded-full w-10'}
           alt="profile"
@@ -88,8 +88,8 @@ const ReviewConversation = () => {
                   className={`flex cursor-pointer items-center gap-5 py-4 border p-2 mb-2 shadow-md ${isSelected ? "bg-white" : "bg-gray-200"}`}
                 >
                   <div className='flex'>
-                    <img className='h-10 rounded-full w-10 ' src={`${imageUrl}${participant?.participants[0]?.profile_image}`} alt="" />
-                    <img className='ml-[-10px] h-10 rounded-full w-10' src={`${imageUrl}${participant?.participants[1]?.profile_image}`} alt="" />
+                    <img className='h-10 rounded-full w-10 ' src={getFullImageUrl(participant?.participants[0]?.profile_image)} alt="" />
+                    <img className='ml-[-10px] h-10 rounded-full w-10' src={getFullImageUrl(participant?.participants[1]?.profile_image)} alt="" />
                   </div>
                   <p>{participant?.participants[0]?.name} & {participant?.participants[1]?.name}</p>
                 </div>

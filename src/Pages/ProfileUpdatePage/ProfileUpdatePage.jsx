@@ -4,7 +4,7 @@ import ProfileUpdateRequest from '../../Components/ProfileUpdateRequest/ProfileU
 import { FaArrowLeft } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { useGetPendingPartnerQuery } from '../../redux/api/dashboardHomeApi';
-import { imageUrl } from '../../redux/api/baseApi';
+import { imageUrl, getFullImageUrl } from '../../redux/api/baseApi';
 const ProfileUpdatePage = () => {
     const [current, setCurrent] = useState(1);
 
@@ -24,13 +24,13 @@ const ProfileUpdatePage = () => {
       {
         key: i + 1,
         name: partner?.name,
-        img: `${imageUrl}${partner?.profile_image}`,
+        img: getFullImageUrl(partner?.profile_image),
         email: partner?.email,
         contact:partner?.phone_number,
         // vichelType: 'car',
         // vichelNumber: "A 23445355",
-        drivingLicense: `${imageUrl}${partner?.drivingLicenseImage}`,
-        vichelImg: `${imageUrl}${partner?.vehicleFrontImag}`,
+        drivingLicense: getFullImageUrl(partner?.drivingLicenseImage),
+        vichelImg: getFullImageUrl(partner?.vehicleFrontImag),
         // passport: 759175632578,
         location: partner?.country,
         status : partner?.status

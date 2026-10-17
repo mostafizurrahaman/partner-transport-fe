@@ -6,7 +6,7 @@ import ActiveAdminsTable from '../../Components/ActiveAdminsTable/ActiveAdminsTa
 import img from '../../assets/images/conver1.png'
 import { useGetAdminProfileQuery } from '../../redux/api/authApi'
 import { io } from 'socket.io-client'
-import { imageUrl } from '../../redux/api/baseApi'
+import { imageUrl, getFullImageUrl } from '../../redux/api/baseApi'
 import Loading from '../../Components/Loading/Loading'
 
 const ActiveAdminsPage = () => {
@@ -37,7 +37,7 @@ const ActiveAdminsPage = () => {
         {
           key: i+1,
           slNo: i + 1,
-          admin: { name: admin?.name, avatar: `${imageUrl}${admin?.profile_image}`, online: true },
+          admin: { name: admin?.name, avatar: getFullImageUrl(admin?.profile_image), online: true },
           email: admin?.email,
           activity: admin?.phone_number,
           tasksCompleted: admin?.todayCompletedTasks,

@@ -7,7 +7,7 @@ import {
   useGetAdminProfileQuery,
 } from "../../redux/api/authApi";
 import { toast } from "sonner";
-import { imageUrl } from "../../redux/api/baseApi";
+import { imageUrl, getFullImageUrl } from "../../redux/api/baseApi";
 const admin = false;
 const Profile = () => {
   const { data: getAdminProfile } = useGetAdminProfileQuery();
@@ -85,11 +85,11 @@ const Profile = () => {
             />
             <img
               style={{ width: 140, height: 140, borderRadius: "100%" }}
-              src={`${
+              src={
                 image
                   ? URL.createObjectURL(image)
-                  : `${imageUrl}${getAdminProfile?.data?.profile_image}`
-              }`}
+                  : getFullImageUrl(getAdminProfile?.data?.profile_image)
+              }
               // src={image ? image : getAdminProfile?.data?.profile_image}
               alt=""
               className=" border-[#007BFF] border-2 shadow-2xl"
