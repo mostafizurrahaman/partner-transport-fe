@@ -59,6 +59,15 @@ const FileClaim = () => {
     OTHER: { label: "Other", color: "default" }
   }
 
+  const claimTypeChips = [
+    { value: 'all', label: 'All' },
+    ...CLAIM_TYPES.map((type) => ({
+      value: type.value,
+      label: claimTypeMap[type.value]?.label || type.label,
+      fullLabel: type.label,
+    })),
+  ];
+
   const rawClaimsList = getAllFileClaim?.data?.data || []
 
   // Client-side date filter if selected
@@ -114,34 +123,34 @@ const FileClaim = () => {
 
   const columns = [
     {
-      title: 'Claim ID',
+      title: <span className='whitespace-nowrap'>Claim ID</span>,
       dataIndex: 'complainId',
       key: 'complainId',
       render: (id) => <span className='font-mono font-medium text-xs text-gray-700'>#{id ? id.slice(-6) : 'N/A'}</span>,
       width: 100,
     },
     {
-      title: 'Order / Service',
+      title: <span className='whitespace-nowrap'>Order / Service</span>,
       dataIndex: 'orderId',
       key: 'orderId',
       render: (id, record) => (
-        <div>
+        <div className='whitespace-nowrap'>
           <span className='font-mono text-xs text-blue-600 font-semibold'>#{id ? id.slice(-6) : 'N/A'}</span>
           {record.isDuringActiveService && (
             <span className='block text-[10px] text-amber-600 font-medium'>⚡ Active Service</span>
           )}
         </div>
       ),
-      width: 120,
+      width: 140,
     },
     {
-      title: 'Date',
+      title: <span className='whitespace-nowrap'>Date</span>,
       dataIndex: 'date',
       key: 'date',
       width: 100,
     },
     {
-      title: 'Claimant',
+      title: <span className='whitespace-nowrap'>Claimant</span>,
       key: 'user',
       render: (_, record) => (
         <Space>
@@ -156,7 +165,7 @@ const FileClaim = () => {
       ),
     },
     {
-      title: 'Claim Reason / Type',
+      title: <span className='whitespace-nowrap'>Claim Reason / Type</span>,
       dataIndex: 'claimType',
       key: 'claimType',
       render: (type) => {
@@ -165,7 +174,7 @@ const FileClaim = () => {
       },
     },
     {
-      title: 'Claim Against',
+      title: <span className='whitespace-nowrap'>Claim Against</span>,
       key: 'complainAgainst',
       render: (_, record) => (
         <Space>
@@ -175,7 +184,7 @@ const FileClaim = () => {
       ),
     },
     {
-      title: 'Evidence',
+      title: <span className='whitespace-nowrap'>Evidence</span>,
       dataIndex: 'evidence',
       key: 'evidence',
       render: (evidence) => {
@@ -201,7 +210,7 @@ const FileClaim = () => {
       width: 110,
     },
     {
-      title: 'Status',
+      title: <span className='whitespace-nowrap'>Status</span>,
       dataIndex: 'status',
       key: 'status',
       render: (_, record) => (
@@ -221,7 +230,7 @@ const FileClaim = () => {
       width: 135,
     },
     {
-      title: 'Final Outcome',
+      title: <span className='whitespace-nowrap'>Final Outcome</span>,
       key: 'finalDecision',
       render: (_, record) => {
         if (record.finalDecision?.resolutionType) {
@@ -241,7 +250,7 @@ const FileClaim = () => {
       },
     },
     {
-      title: 'Actions',
+      title: <span className='whitespace-nowrap'>Actions</span>,
       key: 'actions',
       render: (_, record) => (
         <div className='flex items-center gap-1.5'>
@@ -325,28 +334,16 @@ const FileClaim = () => {
           <span>Filters:</span>
         </div>
 
-        {/* Claim Type Filter */}
-        <div>
-          <span className='text-gray-500 mr-2'>Claim Type:</span>
-          <Select
-            size="small"
-            value={claimTypeFilter}
-            onChange={(val) => setClaimTypeFilter(val)}
-            style={{ width: 180 }}
-            options={[
-              { value: 'all', label: 'All Claim Types' },
-              ...CLAIM_TYPES,
-            ]}
-          />
-        </div>
-
         {/* Status Filter */}
         <div>
           <span className='text-gray-500 mr-2'>Status:</span>
           <Select
             size="small"
             value={statusFilter}
-            onChange={(val) => setStatusFilter(val)}
+            onChange={(val) => {
+              setStatusFilter(val);
+              setPage(1);
+            }}
             style={{ width: 140 }}
             options={[
               { value: 'all', label: 'All Statuses' },
@@ -363,7 +360,10 @@ const FileClaim = () => {
           <span className='text-gray-500 mr-2'>Date:</span>
           <DatePicker
             size="small"
-            onChange={(date, dateStr) => setSelectedDate(dateStr)}
+            onChange={(date, dateStr) => {
+              setSelectedDate(dateStr);
+              setPage(1);
+            }}
           />
         </div>
 
@@ -375,12 +375,38 @@ const FileClaim = () => {
               setStatusFilter('all');
               setSelectedDate('');
               setSearchTerm('');
+              setPage(1);
             }}
             className='text-blue-600 hover:underline font-medium ml-auto'
           >
             Clear Filters
           </button>
         )}
+      </div>
+
+      {/* Claim Type Filter Chips (like category filter) */}
+      <div className='mt-4 flex flex-wrap items-center gap-2'>
+        {claimTypeChips.map((chip) => {
+          const isActive = claimTypeFilter === chip.value;
+          return (
+            <button
+              key={chip.value}
+              type='button'
+              onClick={() => {
+                setClaimTypeFilter(chip.value);
+                setPage(1);
+              }}
+              title={chip.fullLabel || chip.label}
+              className={`px-4 py-1.5 rounded-full text-xs font-medium transition-colors cursor-pointer ${
+                isActive
+                  ? 'bg-black text-white shadow-sm'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              }`}
+            >
+              {chip.label}
+            </button>
+          );
+        })}
       </div>
 
       {/* Claims Table */}
@@ -393,6 +419,7 @@ const FileClaim = () => {
             dataSource={formattedTableData}
             pagination={false}
             rowKey="key"
+            scroll={{ x: 'max-content' }}
           />
         )}
 
