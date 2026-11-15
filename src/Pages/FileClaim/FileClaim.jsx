@@ -1,4 +1,4 @@
-import { Avatar, Button, DatePicker, Image, Pagination, Select, Space, Table, Tag, Tooltip } from 'antd'
+import { Avatar, Button, DatePicker, Image, Pagination, Popconfirm, Select, Space, Table, Tag, Tooltip } from 'antd'
 import React, { useState } from 'react'
 import { CiEdit, CiSearch } from 'react-icons/ci'
 import { Link } from 'react-router-dom'
@@ -9,7 +9,7 @@ import PenaltyModal from '../../Components/PenaltyModal'
 import ComplainDetailsModal from '../../Components/ComplainDetailsModal'
 import ClaimResolutionModal from '../../Components/ClaimResolutionModal'
 import { CLAIM_TYPES } from '../../Components/ClaimFilingModal'
-import { useGetAllFileClaimQuery, useUpdateClaimedStatusMutation } from '../../redux/api/supportApi'
+import { useExecuteClaimDecisionMutation, useGetAllFileClaimQuery, useUpdateClaimedStatusMutation } from '../../redux/api/supportApi'
 import { imageUrl, getFullImageUrl } from '../../redux/api/baseApi'
 import { toast } from 'sonner'
 import Loading from '../../Components/Loading/Loading'
@@ -28,6 +28,7 @@ const FileClaim = () => {
   const [complainDetails, setComplainDetails] = useState(null)
   const [selectedClaimForResolve, setSelectedClaimForResolve] = useState(null)
   const [serviceId, setServiceId] = useState(null)
+  const [executeClaimDecision, { isLoading: executing }] = useExecuteClaimDecisionMutation()
 
   // API Call with filters
   const { data: getAllFileClaim, isLoading } = useGetAllFileClaimQuery({
@@ -214,18 +215,23 @@ const FileClaim = () => {
       dataIndex: 'status',
       key: 'status',
       render: (_, record) => (
-        <Select
-          size="small"
-          value={record.status}
-          onChange={(value) => handleStatusChange(value, record.complainId)}
-          style={{ width: 125 }}
-          options={[
-            { value: 'pending', label: '🟡 Pending' },
-            { value: 'in-progress', label: '🟠 In Progress' },
-            { value: 'resolved', label: '🟢 Resolved' },
-            { value: 'rejected', label: '🔴 Rejected' },
-          ]}
-        />
+        <div className='flex flex-col gap-1'>
+          <Select
+            size="small"
+            value={record.status}
+            onChange={(value) => handleStatusChange(value, record.complainId)}
+            style={{ width: 125 }}
+            options={[
+              { value: 'pending', label: '🟡 Pending' },
+              { value: 'in-progress', label: '🟠 In Progress' },
+              { value: 'resolved', label: '🟢 Resolved' },
+              { value: 'rejected', label: '🔴 Rejected' },
+            ]}
+          />
+          {['pending', 'in-progress'].includes(record.status) && (
+            <Tag color="orange" className='text-[10px] w-fit'>Payout on hold</Tag>
+          )}
+        </div>
       ),
       width: 135,
     },
@@ -280,18 +286,45 @@ const FileClaim = () => {
             />
           </Tooltip>
 
-          {/* Penalty */}
-          <Tooltip title="Apply Penalty">
-            <Button
-              size="small"
-              onClick={() => {
-                setServiceId(record);
-                setOpenPenaltyModal(true);
-              }}
-              className='bg-red-500 hover:bg-red-600 text-white'
-              icon={<CiEdit size={16} />}
-            />
-          </Tooltip>
+          {/* Execute money decision (refund / penalty) after admin confirmation */}
+          {record.finalDecision?.executed ? (
+            <Tag color="green" className='text-[10px]'>Executed</Tag>
+          ) : (
+            record.status === 'resolved' &&
+            ['REFUND', 'PENALTY_APPLIED'].includes(record.finalDecision?.resolutionType) && (
+              <Popconfirm
+                title="Move money now?"
+                description={`This will ${record.finalDecision.resolutionType === 'REFUND' ? 'refund' : 'apply a penalty of'} $${record.finalDecision.penaltyOrRefundAmount}. This cannot be undone.`}
+                okText="Yes, execute"
+                cancelText="Cancel"
+                onConfirm={async () => {
+                  try {
+                    await executeClaimDecision({ claimId: record.complainId }).unwrap()
+                    toast.success('Decision executed')
+                  } catch (err) {
+                    toast.error(err?.data?.message || 'Failed to execute decision')
+                  }
+                }}
+              >
+                <Button size="small" danger loading={executing}>Execute</Button>
+              </Popconfirm>
+            )
+          )}
+
+          {/* Penalty: manual only when the decision is not already a penalty (avoids double deduction) */}
+          {!record.finalDecision?.executed && record.finalDecision?.resolutionType !== 'PENALTY_APPLIED' && (
+            <Tooltip title="Apply Penalty">
+              <Button
+                size="small"
+                onClick={() => {
+                  setServiceId(record);
+                  setOpenPenaltyModal(true);
+                }}
+                className='bg-red-500 hover:bg-red-600 text-white'
+                icon={<CiEdit size={16} />}
+              />
+            </Tooltip>
+          )}
         </div>
       ),
       width: 130,

@@ -165,6 +165,13 @@ const AuctionDetails = () => {
                     <p className="text-sm font-medium text-gray-700 mt-1 capitalize">{getAuctionDetails?.data?.result?.partner_status?.replace(/_/g, ' ') || "None"}</p>
                   </div>
                 </div>
+                <div className="border-t border-gray-200 pt-3">
+                  <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Claim Status</p>
+                  <p className="text-sm font-medium text-gray-700 mt-1 capitalize">{getAuctionDetails?.data?.result?.claimStatus?.replace(/-/g, ' ') || "None"}</p>
+                  {["pending", "in-progress"].includes(getAuctionDetails?.data?.result?.claimStatus) && (
+                    <p className="text-xs text-red-600 mt-1">Payout is on hold until this claim is resolved.</p>
+                  )}
+                </div>
               </div>
             </div>
           </div>

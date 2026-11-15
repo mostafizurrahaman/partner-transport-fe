@@ -39,6 +39,14 @@ const supportApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["fileClaim"],
     }),
+    executeClaimDecision: builder.mutation({
+      query: (data) => ({
+        url: "/dashboard/execute-claim-decision",
+        method: "POST",
+        body: { ...data, confirm: true },
+      }),
+      invalidatesTags: ["fileClaim"],
+    }),
     updateClaimedStatus: builder.mutation({
       query: (data) => ({
         url: "/dashboard/status-file-claim",
@@ -78,6 +86,7 @@ export const {
   useCreateFileClaimMutation,
   useAddClaimAdminNoteMutation,
   useResolveAdminClaimMutation,
+  useExecuteClaimDecisionMutation,
   useUpdateClaimedStatusMutation,
   usePenaltyCostMutation,
   useGetAllTicketQuery,
