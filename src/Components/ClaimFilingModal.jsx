@@ -7,14 +7,14 @@ import { toast } from "sonner";
 const { TextArea } = Input;
 
 export const CLAIM_TYPES = [
-  { value: "SERVICE_NON_COMPLIANCE", label: "Service Non-Compliance" },
-  { value: "DAMAGES", label: "Damages to Property or Goods" },
-  { value: "CANCELLATION_ISSUE", label: "Cancellation Dispute" },
-  { value: "PRICE_DISCREPANCY", label: "Price / Charge Difference" },
-  { value: "LOCATION_PROBLEM", label: "Pickup / Delivery Location Issue" },
-  { value: "LACK_OF_RESPONSE", label: "Lack of Partner/User Response" },
-  { value: "DELIVERY_PROBLEM", label: "Delivery / Unloading Problem" },
-  { value: "OTHER", label: "Other Disagreement" },
+  { value: "SERVICE_NON_COMPLIANCE", label: "Incumplimiento del Servicio" },
+  { value: "DAMAGES", label: "Daños a la Propiedad o Bienes" },
+  { value: "CANCELLATION_ISSUE", label: "Problema de Cancelación" },
+  { value: "PRICE_DISCREPANCY", label: "Discrepancia de Precio o Cobro" },
+  { value: "LOCATION_PROBLEM", label: "Problema de Ubicación de Recogida / Entrega" },
+  { value: "LACK_OF_RESPONSE", label: "Falta de Respuesta" },
+  { value: "DELIVERY_PROBLEM", label: "Problema en la Entrega o Descarga" },
+  { value: "OTHER", label: "Otro Desacuerdo" },
 ];
 
 const ClaimFilingModal = ({ open, onCancel, serviceId, userRole = "Admin" }) => {
@@ -40,12 +40,12 @@ const ClaimFilingModal = ({ open, onCancel, serviceId, userRole = "Admin" }) => 
       });
 
       await createClaim({ serviceId, data: formData }).unwrap();
-      toast.success("Claim filed successfully and sent for admin review.");
+      toast.success("Reclamación enviada exitosamente para revisión administrativa.");
       form.resetFields();
       setFileList([]);
       onCancel();
     } catch (err) {
-      toast.error(err?.data?.message || "Failed to file claim");
+      toast.error(err?.data?.message || "Error al enviar la reclamación");
     }
   };
 
@@ -59,13 +59,13 @@ const ClaimFilingModal = ({ open, onCancel, serviceId, userRole = "Admin" }) => 
       title={
         <div className="flex items-center gap-2 text-red-600 font-bold text-lg">
           <WarningOutlined />
-          <span>File Active Service Claim (Feature 10)</span>
+          <span>Presentar Reclamación de Servicio Activo</span>
         </div>
       }
     >
       <div className="p-1">
         <p className="text-xs text-gray-500 mb-4">
-          Report an urgent issue or disagreement regarding Service #{serviceId ? String(serviceId).slice(-6) : "N/A"}. This claim will be routed immediately to XM Operations for investigation and formal resolution.
+          Reporte un problema urgente o desacuerdo con respecto al Servicio #{serviceId ? String(serviceId).slice(-6) : "N/A"}. Esta reclamación será enviada de inmediato a Operaciones para su investigación y resolución.
         </p>
 
         <Form
@@ -75,25 +75,25 @@ const ClaimFilingModal = ({ open, onCancel, serviceId, userRole = "Admin" }) => 
           initialValues={{ claimType: "SERVICE_NON_COMPLIANCE" }}
         >
           <Form.Item
-            label="Claim Reason / Category"
+            label="Categoría / Motivo de la Reclamación"
             name="claimType"
-            rules={[{ required: true, message: "Please select a claim category" }]}
+            rules={[{ required: true, message: "Por favor seleccione una categoría de reclamo" }]}
           >
             <Select options={CLAIM_TYPES} size="large" />
           </Form.Item>
 
           <Form.Item
-            label="Detailed Description"
+            label="Descripción Detallada"
             name="description"
-            rules={[{ required: true, min: 10, message: "Please describe the issue in detail (at least 10 chars)" }]}
+            rules={[{ required: true, min: 10, message: "Por favor describa el problema en detalle (mínimo 10 caracteres)" }]}
           >
             <TextArea
               rows={4}
-              placeholder="Explain the non-compliance, damage, pricing difference, or operational issue..."
+              placeholder="Explique el incumplimiento, daño, diferencia de precio o problema operativo..."
             />
           </Form.Item>
 
-          <Form.Item label="Upload Evidence Photos (Optional)">
+          <Form.Item label="Subir Fotos de Evidencia (Opcional)">
             <Upload
               listType="picture"
               fileList={fileList}
@@ -105,7 +105,7 @@ const ClaimFilingModal = ({ open, onCancel, serviceId, userRole = "Admin" }) => 
                 type="button"
                 className="flex items-center gap-2 border border-gray-300 px-4 py-2 rounded-lg text-sm hover:bg-gray-50 transition-colors"
               >
-                <UploadOutlined /> Select Photos
+                <UploadOutlined /> Seleccionar Fotos
               </button>
             </Upload>
           </Form.Item>
@@ -116,14 +116,14 @@ const ClaimFilingModal = ({ open, onCancel, serviceId, userRole = "Admin" }) => 
               onClick={onCancel}
               className="px-5 py-2 border rounded-full text-gray-700 hover:bg-gray-100 font-medium text-sm transition-colors"
             >
-              Cancel
+              Cancelar
             </button>
             <button
               type="submit"
               disabled={isLoading}
               className="px-6 py-2 bg-red-600 hover:bg-red-700 text-white rounded-full font-medium text-sm transition-colors shadow-sm disabled:opacity-50"
             >
-              {isLoading ? "Submitting..." : "Submit Claim"}
+              {isLoading ? "Enviando..." : "Enviar Reclamación"}
             </button>
           </div>
         </Form>
