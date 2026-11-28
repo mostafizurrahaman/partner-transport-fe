@@ -292,6 +292,8 @@ const FileClaim = () => {
           ) : (
             record.status === 'resolved' &&
             ['REFUND', 'PENALTY_APPLIED'].includes(record.finalDecision?.resolutionType) && (
+              // penaltyOrRefundAmount is in USD (same unit as Win Bid USD).
+              // The backend converts it to the currency Stripe charged (MXN/USD) before refunding.
               <Popconfirm
                 title="Move money now?"
                 description={`This will ${record.finalDecision.resolutionType === 'REFUND' ? 'refund' : 'apply a penalty of'} $${record.finalDecision.penaltyOrRefundAmount}. This cannot be undone.`}
